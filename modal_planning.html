@@ -3,33 +3,149 @@
   <head>
     <base target="_top">
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 20px;
+      :root {
+        --brand: #2F5AEA;
+        --brand-dark: #2447bb;
+        --brand-soft: #eef3ff;
+        --text: #162033;
+        --muted: #6b7280;
+        --border: #d9e2ff;
       }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: #fff;
+        color: var(--text);
+      }
+
+      .page {
+        padding: 18px 22px 18px;
+      }
+
+      .section-title {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--brand);
+      }
+
+      .field-card {
+        margin-bottom: 14px;
+        padding: 14px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: #fff;
+      }
+
       label {
         display: block;
         margin-bottom: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
       }
-      select, input[type="text"] {
-        padding: 8px;
-        font-size: 14px;
+
+      select,
+      input[type="text"] {
         width: 100%;
-        box-sizing: border-box;
-        margin-bottom: 14px;
+        padding: 11px 12px;
+        font: inherit;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: #fff;
+        color: var(--text);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
       }
+
+      select:focus,
+      input[type="text"]:focus {
+        border-color: var(--brand);
+        box-shadow: 0 0 0 4px rgba(47, 90, 234, 0.12);
+        outline: none;
+      }
+
+      input[readonly] {
+        background: #f8faff;
+        color: var(--muted);
+      }
+
       button {
-        padding: 10px 18px;
+        width: 100%;
+        padding: 12px 16px;
         font-size: 14px;
-        background-color: #007bff;
+        font-weight: 700;
+        background: var(--brand);
         color: white;
         border: none;
-        border-radius: 4px;
+        border-radius: 14px;
         cursor: pointer;
+        box-shadow: 0 10px 24px rgba(47, 90, 234, 0.22);
+        transition: transform 0.15s ease, background 0.15s ease;
       }
+
       button:hover {
-        background-color: #0056b3;
+        background: var(--brand-dark);
+        transform: translateY(-1px);
       }
+
+      .signature {
+        margin-top: 14px;
+        text-align: center;
+        font-size: 12px;
+        color: var(--brand);
+      }
+
+      .signature a {
+        color: inherit;
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      #loaderOverlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255,255,255,0.85);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .loader-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--brand-soft);
+        color: var(--brand);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .spinner {
+        width: 18px;
+        height: 18px;
+        border: 3px solid rgba(47, 90, 234, 0.2);
+        border-top-color: var(--brand);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
@@ -37,37 +153,42 @@
     </style>
   </head>
   <body>
-    <label for="startWeek">Semaine de début :</label>
-    <select id="startWeek" onchange="updateEndWeek()"></select>
+    <div class="page">
+      <span class="section-title">Planning</span>
 
-    <label for="endWeek">Semaine de fin (auto) :</label>
-    <input type="text" id="endWeek" readonly>
+      <div class="field-card">
+        <label for="startWeek">Semaine de début</label>
+        <select id="startWeek" onchange="updateEndWeek()"></select>
+      </div>
 
-    <button onclick="submit()">Créer le planning</button>
+      <div class="field-card">
+        <label for="endWeek">Semaine de fin (auto)</label>
+        <input type="text" id="endWeek" readonly>
+      </div>
 
-    <div style="text-align:right; font-size:10px; color:#007fff; opacity:0.5;">
-      by <a href="https://utema.fr" target="_blank" style="color: #007fff; text-decoration: none;">Utema.fr</a>
+      <button onclick="submit()">Créer le planning</button>
+
+      <div class="signature">
+        <span>Made with &lt;3 by <a href="https://utema.fr" target="_blank">Utema</a>. 2026</span>
+      </div>
     </div>
 
-    <!-- Loader -->
-    <div id="loaderOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background-color: rgba(255,255,255,0.85); z-index: 9999; display: flex; justify-content: center;
-        align-items: center; flex-direction: column;">
-      <div style="border: 6px solid #f3f3f3; border-top: 6px solid #007fff; border-radius: 50%; width: 50px;
-          height: 50px; animation: spin 1s linear infinite;"></div>
-      <div id="loaderMessage" style="margin-top: 15px; font-weight: bold; color: #007fff;">Chargement…</div>
+    <div id="loaderOverlay">
+      <div class="loader-wrap">
+        <div class="spinner"></div>
+        <div id="loaderMessage">Chargement…</div>
+      </div>
     </div>
 
     <script>
       let weekOptions = [];
-      const MAX_WEEKS = parseInt(<?= maxWeeks ?>);
-
-      hideLoader();
+      const MAX_WEEKS = parseInt(<?= maxWeeks ?>, 10);
 
       function generateWeekOptions() {
         const today = new Date();
         const containerStart = document.getElementById("startWeek");
         weekOptions = [];
+        containerStart.innerHTML = "";
 
         const totalWeeks = 40;
         const selectableWeeks = totalWeeks - MAX_WEEKS;
@@ -82,9 +203,8 @@
 
           weekOptions.push({ value, label, year: isoYear, week: isoWeek });
 
-          // On met dans le <select> uniquement les semaines de début possibles
           if (i < selectableWeeks) {
-            const option = new Option(label, i); // valeur = index dans weekOptions[]
+            const option = new Option(label, i);
             containerStart.appendChild(option);
           }
         }
@@ -104,22 +224,22 @@
       }
 
       function updateEndWeek() {
-        const startIndex = parseInt(document.getElementById('startWeek').value, 10);
+        const startIndex = parseInt(document.getElementById("startWeek").value, 10);
 
         if (startIndex + (MAX_WEEKS - 1) < weekOptions.length) {
           const end = weekOptions[startIndex + MAX_WEEKS - 1];
-          document.getElementById('endWeek').value = `S${end.week.toString().padStart(2, '0')} - ${end.year}`;
-          document.getElementById('endWeek').dataset.value = end.value;
+          document.getElementById("endWeek").value = `S${end.week.toString().padStart(2, "0")} - ${end.year}`;
+          document.getElementById("endWeek").dataset.value = end.value;
         } else {
-          document.getElementById('endWeek').value = 'Limite atteinte';
-          document.getElementById('endWeek').dataset.value = '';
+          document.getElementById("endWeek").value = "Limite atteinte";
+          document.getElementById("endWeek").dataset.value = "";
         }
       }
 
       function submit() {
-        const startIndex = parseInt(document.getElementById('startWeek').value, 10);
-        const start = weekOptions[startIndex]?.value || '';
-        const end = document.getElementById('endWeek').dataset.value;
+        const startIndex = parseInt(document.getElementById("startWeek").value, 10);
+        const start = weekOptions[startIndex]?.value || "";
+        const end = document.getElementById("endWeek").dataset.value;
 
         if (!end || !start) {
           alert("Erreur : la sélection est invalide.");
@@ -135,13 +255,10 @@
           })
           .withFailureHandler(err => {
             hideLoader();
-            alert('Erreur : ' + err.message);
+            alert("Erreur : " + err.message);
           })
           .generatePlanningBetweenYearWeeks(start, end);
       }
-
-      window.onload = generateWeekOptions;
-
 
       function showLoader(message = "Chargement…") {
         document.getElementById("loaderMessage").innerText = message;
@@ -152,6 +269,7 @@
         document.getElementById("loaderOverlay").style.display = "none";
       }
 
+      window.onload = generateWeekOptions;
     </script>
   </body>
 </html>
