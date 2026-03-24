@@ -29,21 +29,21 @@ function openPlanningGenerator() {
 function openCalendarModal() {
   const html = HtmlService.createHtmlOutputFromFile("modal_calendar")
     .setWidth(600)
-    .setHeight(600);
+    .setHeight(500);
   SpreadsheetApp.getUi().showModalDialog(html, "Gestion des Calendriers");
 }
 
 function openDeleteSheetModal() {
   const html = HtmlService.createHtmlOutputFromFile("modal_delete")
     .setWidth(500)
-    .setHeight(400);
+    .setHeight(300);
   SpreadsheetApp.getUi().showModalDialog(html, "Supprimer un planning");
 }
 
 function openSyncModal() {
   const html = HtmlService.createHtmlOutputFromFile("modal_sync")
     .setWidth(500)
-    .setHeight(400);
+    .setHeight(350);
   SpreadsheetApp.getUi().showModalDialog(html, "Synchroniser les Agendas");
 }
 
